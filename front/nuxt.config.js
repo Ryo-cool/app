@@ -80,6 +80,9 @@ export default {
       }
     }
   },
+  publicRuntimeConfig: {
+    appName: process.env.APP_NAME
+  },
   /*
   ** Build configuration
   */
