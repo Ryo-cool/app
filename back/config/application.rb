@@ -38,7 +38,7 @@ module App
     config.add_autoload_paths_to_load_path = false
 
     # Zeitwerk（ツァイトベルク）にvalidator配下のファイルを読み込ます
-    config.autoload_paths += %W(#{config.root}/lib/validator)
+    # config.autoload_paths += %W(#{config.root}/lib/validator)
 
     config.api_only = true
   end
