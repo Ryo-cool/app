@@ -10,6 +10,17 @@ export const state = () => ({
 
 export const getters = {}
 
-export const mutations = {}
+export const mutations = {
+  // ログイン
+  setLoggedIn (state, payload) {
+    state.loggedIn = payload
+  }
 
-export const actions = {}
+}
+
+export const actions = {
+  // ログイン
+  login ({ commit }) {
+    commit('setLoggedIn', true)
+  }
+}
