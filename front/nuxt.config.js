@@ -2,6 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   mode: 'spa',
+  components: true,
   /*
   ** Headers of the page
   */
@@ -49,7 +50,8 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
+    customVariables: ['~/assets/sass/variables.scss'],
     theme: {
       dark: false,
       themes: {
@@ -61,6 +63,15 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
+        },
+        light: {
+          primary: '4080BE',
+          info: '4FC1E9',
+          success: '44D69E',
+          warning: 'FEB65E',
+          error: 'FB8678',
+          background: 'f6f6f4',
+          myblue: '1867C0'
         }
       }
     }
@@ -69,6 +80,7 @@ export default {
   i18n: {
     locales: ['ja', 'en'],
     defaultLocale: 'ja',
+    strategy: 'no_prefix',
     // Doc: https://kazupon.github.io/vue-i18n/api/#properties
     vueI18n: {
       fallbackLocale: 'ja',
@@ -79,6 +91,9 @@ export default {
         en: require('./locales/en.json')
       }
     }
+  },
+  publicRuntimeConfig: {
+    appName: process.env.APP_NAME
   },
   /*
   ** Build configuration
