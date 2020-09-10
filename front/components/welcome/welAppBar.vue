@@ -9,12 +9,9 @@
   <app-logo
     @click.native="goTo('scroll-top')"
   />
-    <v-toolbar-title
+    <app-title
       class="hidden-mobile-and-down"
-    >
-      
-      {{ appName }}
-    </v-toolbar-title>
+    />
     <v-spacer />
     <v-toolbar-items class="ml-2 hidden-ipad-and-down">
       <v-btn
@@ -61,10 +58,6 @@
 
 <script>
 
-import appLogo from '~/components/ui/appLogo'
-import signupLink from '~/components/beforeLogin/signupLink'
-import loginLink from '~/components/beforeLogin/loginLink'
-
 export default {
   props: {
     menus: {
@@ -76,14 +69,9 @@ export default {
       defalut: 0
     }
   },
-  components: {
-    appLogo,
-    signupLink,
-    loginLink
-  },
-  data ({ $config: { appName }, $store }) {
+
+  data ({ $store }) {
     return {
-      appName,
       scrollY: 0,
       appBarHeight: $store.state.styles.beforeLogin.appBarHeight
     }
