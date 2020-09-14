@@ -22,5 +22,9 @@ export const actions = {
   // ログイン
   login ({ commit }) {
     commit('setLoggedIn', true)
+  },
+  // ログアウト
+  logout ({ commit }) {
+    commit('setLoggedIn', false)
   }
 }
