@@ -11,9 +11,9 @@
         <v-btn color="primary" @click="createPost">ADD post</v-btn>
       </v-col>
       <v-col cols="12">
-          <h1 class="text--secondary">投稿画面 </h1>
-      </v-col>
-    </v-row>
+          <h1>投稿画面 </h1>
+        </v-col>
+      </v-row>
 
       <v-card
         class="mx-auto"
@@ -21,7 +21,7 @@
         tile
       >
           <v-list rounded>
-            <v-subheader class="font-italic">posts</v-subheader>
+            <v-subheader>posts</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item
                 v-for="post in posts"
