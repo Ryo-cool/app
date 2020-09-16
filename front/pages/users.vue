@@ -3,17 +3,17 @@
     <v-row align="center" justify="center">
       <v-col cols="12">
         <v-text-field
-        label="postname"
+        label="Username"
         v-model="name"
         prepend-icon=""
         type="text"
         />
-        <v-btn color="primary" @click="createPost">ADD post</v-btn>
+        <v-btn color="primary" @click="createUser">ADD USER</v-btn>
       </v-col>
       <v-col cols="12">
-          <h1 class="text--secondary">投稿画面 </h1>
-      </v-col>
-    </v-row>
+          <h1>Hello, Qiita! </h1>
+        </v-col>
+      </v-row>
 
       <v-card
         class="mx-auto"
@@ -21,17 +21,15 @@
         tile
       >
           <v-list rounded>
-            <v-subheader class="font-italic">posts</v-subheader>
+            <v-subheader>USERS</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item
-                v-for="post in posts"
-                :key="posts.id"
+                v-for="user in users"
+                :key="users.id"
                 @click=""
               >
                 <v-list-item-content>
-                  <v-list-item-title v-text="post.name"></v-list-item-title>
-                  <v-list-item-title v-text="post.text"></v-list-item-title>
-                  <v-list-item-title v-text="post.id"></v-list-item-title>
+                  <v-list-item-title v-text="user.name"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -39,34 +37,30 @@
       </v-card>
     </v-container>
 </template>
-
 <script>
 import axios from "~/plugins/axios"
 
 export default {
   data() {
     return {
-      name: "",
-      text: "",
-      msgs: [],
-      posts: []
+      users: []
     }
   },
   created() {
     // ユーザーをaxiosで取得
-    axios.get("/api/v1/posts").then(res => {
+    axios.get("/users").then(res => {
       if (res.data) {
-          this.posts = res.data
-          }
-        })
+        this.users = res.data
+      }
+    })
   },
   methods: {
     // ユーザーをaxiosで登録
-    createPost(){
-      axios.post("/posts", {name: this.name,text: this.text})
+    createUser(){
+      axios.post("/users", {name: this.name})
     .then(res => {
       if (res.data) {
-          this.posts.push(res.data)
+          this.users.push(res.data)
           }
         })
       }

@@ -131,6 +131,7 @@ export default {
 
   data () {
     return {
+      msgs: [],
       homeImg,
       container: {
         sm: 10,
