@@ -63,13 +63,12 @@ export default {
   methods: {
     // ユーザーをaxiosで登録
     createPost(){
-      axios.post("/posts", {name: this.name,text: this.text})
-    .then(res => {
-      if (res.data) {
-          this.posts.push(res.data)
-          }
-        })
-      }
+      axios.post("/api/v1/posts", {name: this.name,text: this.text}).then(res => {
+        if (res.data) {
+            this.posts.push(res.data)
+        }
+      })
+    }
   }
 }
 </script>

@@ -3,39 +3,46 @@
     <v-row align="center" justify="center">
       <v-col cols="12">
         <v-text-field
-        label="postname"
+        label="name"
         v-model="name"
         prepend-icon=""
         type="text"
         />
-        <v-btn color="primary" @click="createPost">ADD post</v-btn>
+        <v-text-field
+        label="text"
+        v-model="text"
+        prepend-icon=""
+        type="text"
+        />
+        <v-btn color="primary" @click="createUser">ADD POST</v-btn>
       </v-col>
       <v-col cols="12">
-          <h1 class="text--secondary">投稿画面 </h1>
-      </v-col>
-    </v-row>
+          <h1>こんにちは！ </h1>
+        </v-col>
+      </v-row>
 
       <v-card
         class="mx-auto"
         max-width="300"
         tile
       >
-          <v-list rounded>
-            <v-subheader class="font-italic">posts</v-subheader>
-            <v-list-item-group color="primary">
-              <v-list-item
-                v-for="post in posts"
-                :key="posts.id"
-                @click=""
-              >
-                <v-list-item-content>
-                  <v-list-item-title v-text="post.name"></v-list-item-title>
-                  <v-list-item-title v-text="post.text"></v-list-item-title>
-                  <v-list-item-title v-text="post.id"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
+        <v-list rounded>
+          <v-subheader>posts</v-subheader>
+          <v-list-item-group color="primary">
+            <v-list-item
+              v-for="post in posts"
+              :key="posts.id"
+              @click=""
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="post.name"></v-list-item-title>
+                <v-list-item-title v-text="post.text"></v-list-item-title>
+                <v-list-item-title v-text="post.id"></v-list-item-title>
+                <v-btn color="primary" @click="deletePost">DElETE POST</v-btn>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
       </v-card>
     </v-container>
 </template>
@@ -43,18 +50,19 @@
 <script>
 import axios from "~/plugins/axios"
 
+let url = "/api/v1/posts/"
+
 export default {
   data() {
     return {
       name: "",
       text: "",
-      msgs: [],
       posts: []
     }
   },
   created() {
     // ユーザーをaxiosで取得
-    axios.get("/api/v1/posts").then(res => {
+    axios.get(url).then(res => {
       if (res.data) {
           this.posts = res.data
           }
@@ -62,14 +70,26 @@ export default {
   },
   methods: {
     // ユーザーをaxiosで登録
-    createPost(){
-      axios.post("/posts", {name: this.name,text: this.text})
-    .then(res => {
-      if (res.data) {
-          this.posts.push(res.data)
-          }
-        })
-      }
+    createUser(){
+      axios.post(url, {name: this.name,text: this.text})
+      .then(res => {
+        if (res.data) {
+            this.posts.push(res.data)
+            }
+      })
+    },
+    deletePost(){
+      axios.delete(url + post.id, {data: params})
+      .then(res => {
+        if (res.data) {
+            this.posts.push(res.data)
+            }
+      })
+      .catch(error => {
+          alert("削除失敗");
+          console.log(error, id, params);
+      });
+    }
   }
 }
 </script>
