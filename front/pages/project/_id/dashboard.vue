@@ -79,7 +79,7 @@ export default {
       })
     },
     deletePost(){
-      axios.delete(url + post.id, {data: params})
+      axios.delete('url${this.postId}', {data: params})
       .then(res => {
         if (res.data) {
             this.posts.push(res.data)
