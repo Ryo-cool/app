@@ -14,16 +14,33 @@
         prepend-icon=""
         type="text"
         />
-        <v-btn color="primary" @click="createUser">ADD POST</v-btn>
+        <v-btn color="primary" @click="createUser" class="ma-2">
+          ADD POST<v-icon>mdi-train</v-icon>
+        </v-btn>
       </v-col>
       <v-col cols="12">
           <h1>こんにちは！ </h1>
+          <v-icon large>mdi-train</v-icon>
+          <v-color-picker
+            class="ma-2"
+            hide-canvas
+          ></v-color-picker>
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          <v-rating
+            v-model="rating"
+            background-color="purple lighten-3"
+            color="purple"
+            large
+          ></v-rating>
         </v-col>
       </v-row>
 
       <v-card
         class="mx-auto"
-        max-width="300"
+        max-width="600"
         tile
       >
         <v-list rounded>
@@ -79,7 +96,7 @@ export default {
       })
     },
     deletePost(){
-      axios.delete('url${this.postId}', {data: params})
+      axios.delete(url, {params: {id: 28}})
       .then(res => {
         if (res.data) {
             this.posts.push(res.data)
