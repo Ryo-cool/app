@@ -114,6 +114,7 @@
               {{ $my.format(item.updatedAt) }}
             </template>
           </v-data-table>
+          <japan />
         </v-col>
       </v-row>
     </v-container>

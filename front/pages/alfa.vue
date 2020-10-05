@@ -1,67 +1,176 @@
 <template>
-  <div container>
-    <div class="text-center">
-      <v-btn
-        class="ma-2"
-        :loading="loading"
-        :disabled="loading"
-        color="secondary"
-        @click="loader = 'loading'"
+  <v-container>
+    <v-row>
+      <v-col
+      cols ="12"
+      sm="6"
+      class="my-6 text-center"
+      align-self="start"
       >
-        Accept Terms
-      </v-btn>
-  
-      <v-btn
-        :loading="loading3"
-        :disabled="loading3"
-        color="blue-grey"
-        class="ma-2 white--text"
-        @click="loader = 'loading3'"
+      <user-form-email
+      />
+      <user-form-password
+      />
+      </v-col>
+      <v-col
+      cols ="12"
+      sm="6"
+      class="my-6 text-center"
       >
-        Upload
-        <v-icon right dark>mdi-cloud-upload</v-icon>
-      </v-btn>
-  
-      <v-btn
-        class="ma-2"
-        :loading="loading2"
-        :disabled="loading2"
-        color="success"
-        @click="loader = 'loading2'"
+      <user-form-password
+      />
+      </v-col>
+      <v-col
+        cols="12"
       >
-        Custom Loader
-        <template v-slot:loader>
-          <span>Loading...</span>
-        </template>
-      </v-btn>
-  
-      <v-btn
-        class="ma-2"
-        :loading="loading4"
-        :disabled="loading4"
-        color="info"
-        @click="loader = 'loading4'"
+        <v-card-title>
+          最近のプロジェクト
+        </v-card-title>
+        <v-divider class="mb-4" />
+        <v-card
+          class="pa-4 mb-6"
+          flat
+          height="350px"
+          img="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
+        >
+          <v-toolbar
+            dense
+            floating
+          >
+            <v-text-field
+              hide-details
+              prepend-icon="mdi-magnify"
+              single-line
+            ></v-text-field>
+
+            <v-btn icon>
+              <v-icon>mdi-crosshairs-gps</v-icon>
+            </v-btn>
+
+            <v-btn icon>
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </v-toolbar>
+        </v-card>
+        <v-sheet
+          tile
+          height="54"
+          class="d-flex"
+        >
+          <v-btn
+            icon
+            class="ma-2"
+            @click="$refs.calendar.prev()"
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          <v-select
+            v-model="type"
+            :items="types"
+            dense
+            outlined
+            hide-details
+            class="ma-2"
+            label="type"
+          ></v-select>
+          <v-select
+            v-model="mode"
+            :items="modes"
+            dense
+            outlined
+            hide-details
+            label="event-overlap-mode"
+            class="ma-2"
+          ></v-select>
+          <v-select
+            v-model="weekday"
+            :items="weekdays"
+            dense
+            outlined
+            hide-details
+            label="weekdays"
+            class="ma-2"
+          ></v-select>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon
+            class="ma-2"
+            @click="$refs.calendar.next()"
+          >
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-sheet>
+        <v-sheet height="600">
+          <v-calendar
+            ref="calendar"
+            v-model="value"
+            :weekdays="weekday"
+            :type="type"
+            :events="events"
+            :event-overlap-mode="mode"
+            :event-overlap-threshold="30"
+            :event-color="getEventColor"
+            @change="getEvents"
+          ></v-calendar>
+        </v-sheet>
+      </v-col>
+      <v-col 
+      cols = "12"
+      sm ="6"
       >
-        Icon Loader
-        <template v-slot:loader>
-          <span class="custom-loader">
-            <v-icon light>cached</v-icon>
-          </span>
-        </template>
-      </v-btn>
-  
-      <v-btn
-        :loading="loading5"
-        :disabled="loading5"
-        color="blue-grey"
-        class="ma-2 white--text"
-        fab
-        @click="loader = 'loading5'"
+        <v-carousel v-model="model" height="350">
+          <v-carousel-item
+            v-for="(color, i) in colors"
+            :key="color"
+          >
+            <v-sheet
+              :color="color"
+              height="100%"
+              tile
+            >
+              <v-row
+                class="fill-height"
+                align="center"
+                justify="center"
+              >
+                <div class="display-3">
+                  Slide {{ i + 1 }}
+                </div>
+              </v-row>
+            </v-sheet>
+          </v-carousel-item>
+        </v-carousel>
+      </v-col>
+      <v-col 
+      cols = "12"
+      sm ="6"
       >
-        <v-icon dark>mdi-cloud-upload</v-icon>
-      </v-btn>
-    </div>
-  </div>
+        <v-carousel v-model="model" height="350">
+          <v-carousel-item
+            v-for="(color, i) in colors"
+            :key="color"
+          >
+            <v-sheet
+              :color="color"
+              height="100%"
+              tile
+            >
+              <v-row
+                class="fill-height"
+                align="center"
+                justify="center"
+              >
+                <div class="display-3">
+                  Slide {{ i + 1 }}
+                </div>
+              </v-row>
+            </v-sheet>
+          </v-carousel-item>
+        </v-carousel>
+      </v-col>
+    </v-row>
+  </v-container>
+
 </template>
 
 
@@ -75,6 +184,14 @@
         loading3: false,
         loading4: false,
         loading5: false,
+      model: 0,
+      colors: [
+        'primary',
+        'secondary',
+        'yellow darken-2',
+        'red',
+        'orange',
+      ],
       }
     },
     watch: {
