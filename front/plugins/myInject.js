@@ -16,6 +16,9 @@ class MyInject {
   projectLinkTo (id, name = 'project-id-dashboard') {
     return { name, params: { id } }
   }
+  spotLinkTo (id, name = 'spot-id') {
+    return { name, params: { id } }
+  }
 }
 
 export default ({ app }, inject) => {
