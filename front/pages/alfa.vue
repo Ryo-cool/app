@@ -19,6 +19,17 @@
         prepend-icon=""
         type="text"
         />
+        <img v-if="uploadImageUrl" :src="uploadImageUrl" />
+        <v-file-input
+          chips
+          small-chips
+          show-size
+          v-model="photo"
+          accept="image/png, image/jpeg, image/bmp"
+          prepend-icon="mdi-camera"
+          @change="onImagePicked"
+          
+        />
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
       </v-col>
       <v-col
@@ -40,6 +51,7 @@
                 >
                   <v-list-item-content>
                     <v-list-item-title v-text="spot.name"></v-list-item-title>
+                    <v-list-item-title v-text="spot.photo"></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -59,6 +71,8 @@ export default {
     return {
       name: "",
       introduction: "",
+      photo:null,
+      uploadImageUrl: '',
       spots: []
     }
   },
@@ -71,9 +85,23 @@ export default {
     })
   },
   methods: {
+    onImagePicked(file) {
+      if (file !== undefined && file !== null) {
+        if (file.name.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(file)
+        fr.addEventListener('load', () => {
+          this.uploadImageUrl = fr.result
+        })
+      } else {
+        this.uploadImageUrl = ''
+      }
+    },
      // ユーザーをaxiosで登録
     createSpot(){
-      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction}).then(res => {
+      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,photo: this.photo}).then(res => {
         if (res.data) {
             this.spots.push(res.data)
         }
