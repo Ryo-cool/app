@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       # api test action
       resources :hello, only:[:index]
       resources :posts
+      resources :spots do
+        resources :reviews
+      end
     end
   end
 end

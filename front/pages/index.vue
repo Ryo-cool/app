@@ -114,15 +114,53 @@
               {{ $my.format(item.updatedAt) }}
             </template>
           </v-data-table>
+          <japan />
+          <nuxt-link
+            to="alfa"
+          >
+          確かに
+          </nuxt-link>
         </v-col>
       </v-row>
+    </v-container>
+    <v-container>
+      <row>
+        <v-col>
+          <v-card-title>
+            全てのスポット
+          </v-card-title>
+          <v-divider class="mb-4" />
+            <v-list-item-group color="primary">
+              <v-list-item
+                v-for="spot in spots"
+                :key="spots.id"
+                @click=""
+              >
+                <v-list-item-content
+                >
+                  <nuxt-link
+                  :to="$my.spotLinkTo(spot.id)"
+                  class="text-decoration-none"
+                  >
+                  
+                  <v-list-item-title v-text="spot.name"></v-list-item-title>
+                  <v-list-item-title v-text="spot.introduction"></v-list-item-title>
+                  <v-list-item-title v-text="spot.id"></v-list-item-title>
+                  </nuxt-link>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+        </v-col>
+      </row>
     </v-container>
   </div>
 </template>
 
 <script>
-
+import axios from "~/plugins/axios"
 import homeImg from '~/assets/images/loggedIn/home.png'
+
+let url = "/api/v1/spots/"
 
 export default {
   layout ({ store }) {
@@ -153,8 +191,19 @@ export default {
           width: 150,
           value: 'updatedAt'
         }
-      ]
+      ],
+      spots: [],
+      name:"",
+      introduction:""
     }
+  },
+  created() {
+    // ユーザーをaxiosで取得
+    axios.get(url).then(res => {
+      if (res.data) {
+          this.spots = res.data
+          }
+        })
   },
   computed: {
     recentProjects () {

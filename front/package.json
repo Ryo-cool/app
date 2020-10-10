@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
+    "@svg-maps/japan": "^1.0.1",
     "nuxt": "^2.0.0",
-    "nuxt-i18n": "^6.14.1"
+    "nuxt-i18n": "^6.14.1",
+    "vue-svg-map": "^1.2.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0"

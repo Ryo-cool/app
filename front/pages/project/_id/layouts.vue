@@ -19,6 +19,7 @@
       <v-list-item
         v-for="post in posts"
         :key="posts.id"
+        @click=""
       >
         <v-list-item-content>
           <v-list-item-title v-text="post.name"></v-list-item-title>
@@ -40,6 +41,7 @@ export default {
     return {
       name: "",
       text: "",
+      posts: []
     }
   },
   // created() {

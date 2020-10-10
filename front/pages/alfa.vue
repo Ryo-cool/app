@@ -1,130 +1,121 @@
 <template>
-  <div container>
-    <div class="text-center">
-      <v-btn
-        class="ma-2"
-        :loading="loading"
-        :disabled="loading"
-        color="secondary"
-        @click="loader = 'loading'"
+  <v-container>
+    <v-row>
+      <v-col
+      cols ="12"
+      sm="6"
+      class="my-6 text-center"
+      align-self="start"
       >
-        Accept Terms
-      </v-btn>
-  
-      <v-btn
-        :loading="loading3"
-        :disabled="loading3"
-        color="blue-grey"
-        class="ma-2 white--text"
-        @click="loader = 'loading3'"
+        <v-text-field
+        label="スポット名"
+        v-model="name"
+        prepend-icon=""
+        type="text"
+        />
+        <v-text-field
+        label="説明"
+        v-model="introduction"
+        prepend-icon=""
+        type="text"
+        />
+        <img v-if="uploadImageUrl" :src="uploadImageUrl" />
+        <v-file-input
+          chips
+          small-chips
+          show-size
+          v-model="photo"
+          accept="image/png, image/jpeg, image/bmp"
+          prepend-icon="mdi-camera"
+          @change="onImagePicked"
+          
+        />
+        <v-btn color="primary" @click="createSpot">ADD post</v-btn>
+      </v-col>
+      <v-col
+      cols ="12"
+      sm="6"
       >
-        Upload
-        <v-icon right dark>mdi-cloud-upload</v-icon>
-      </v-btn>
-  
-      <v-btn
-        class="ma-2"
-        :loading="loading2"
-        :disabled="loading2"
-        color="success"
-        @click="loader = 'loading2'"
-      >
-        Custom Loader
-        <template v-slot:loader>
-          <span>Loading...</span>
-        </template>
-      </v-btn>
-  
-      <v-btn
-        class="ma-2"
-        :loading="loading4"
-        :disabled="loading4"
-        color="info"
-        @click="loader = 'loading4'"
-      >
-        Icon Loader
-        <template v-slot:loader>
-          <span class="custom-loader">
-            <v-icon light>cached</v-icon>
-          </span>
-        </template>
-      </v-btn>
-  
-      <v-btn
-        :loading="loading5"
-        :disabled="loading5"
-        color="blue-grey"
-        class="ma-2 white--text"
-        fab
-        @click="loader = 'loading5'"
-      >
-        <v-icon dark>mdi-cloud-upload</v-icon>
-      </v-btn>
-    </div>
-  </div>
+        <v-card
+          class="mx-auto"
+          
+          tile
+        >
+            <v-list rounded>
+              <v-subheader>SPOTS</v-subheader>
+              <v-list-item-group color="primary">
+                <v-list-item
+                  v-for="spot in spots"
+                  :key="spots.id"
+                  @click=""
+                >
+                  <v-list-item-content>
+                    <nuxt-link
+                    :to="$my.spotLinkTo(spot.id)"
+                    class="text-decoration-none"
+                    >
+                    <v-list-item-title v-text="spot.name"></v-list-item-title>
+                    <v-list-item-title v-text="spot.photo"></v-list-item-title>
+                    </nuxt-link>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 
 <script>
-  export default {
-    data () {
-      return {
-        loader: null,
-        loading: false,
-        loading2: false,
-        loading3: false,
-        loading4: false,
-        loading5: false,
+import axios from "~/plugins/axios"
+
+export default {
+  data () {
+    return {
+      name: "",
+      introduction: "",
+      photo:null,
+      uploadImageUrl: '',
+      spots: []
+    }
+  },
+  created() {
+    // ユーザーをaxiosで取得
+    axios.get("/api/v1/spots").then(res => {
+      if (res.data) {
+        this.spots = res.data
+      }
+    })
+  },
+  methods: {
+    onImagePicked(file) {
+      if (file !== undefined && file !== null) {
+        if (file.name.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(file)
+        fr.addEventListener('load', () => {
+          this.uploadImageUrl = fr.result
+        })
+      } else {
+        this.uploadImageUrl = ''
       }
     },
-    watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-
-        setTimeout(() => (this[l] = false), 3000)
-
-        this.loader = null
-      },
-    },
+     // ユーザーをaxiosで登録
+    createSpot(){
+      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,photo: this.photo}).then(res => {
+        if (res.data) {
+            this.spots.push(res.data)
+        }
+      })
+    }
   }
+}
 </script>
 
 <style>
-  .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
-  }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
+
 </style>
