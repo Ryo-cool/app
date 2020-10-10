@@ -2,6 +2,10 @@
   <div> 
     <p>スポット名:{{spot.name}}</p>
     <p>説明:{{spot.introduction}}</p>
+    <nuxt-link
+    :to="$my.spotLinkTo(spot.id)"
+    class="text-decoration-none"
+    >ssssss</nuxt-link>
   </div>
 </template>
 

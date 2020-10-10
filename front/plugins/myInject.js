@@ -19,6 +19,9 @@ class MyInject {
   spotLinkTo (id, name = 'spot-id') {
     return { name, params: { id } }
   }
+  reviewLinkTo (id, name = 'spot-id-review-id') {
+    return { name, params: { id } }
+  }
 }
 
 export default ({ app }, inject) => {

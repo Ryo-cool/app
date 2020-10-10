@@ -50,8 +50,13 @@
                   @click=""
                 >
                   <v-list-item-content>
+                    <nuxt-link
+                    :to="$my.spotLinkTo(spot.id)"
+                    class="text-decoration-none"
+                    >
                     <v-list-item-title v-text="spot.name"></v-list-item-title>
                     <v-list-item-title v-text="spot.photo"></v-list-item-title>
+                    </nuxt-link>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
