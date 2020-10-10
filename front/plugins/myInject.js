@@ -19,7 +19,7 @@ class MyInject {
   spotLinkTo (id, name = 'spot-id') {
     return { name, params: { id } }
   }
-  reviewLinkTo (id, name = 'spot-id-review-id') {
+  reviewLinkTo (id, name = 'spot-id-reviews-new') {
     return { name, params: { id } }
   }
 }

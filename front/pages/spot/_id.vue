@@ -2,10 +2,13 @@
   <div> 
     <p>スポット名:{{spot.name}}</p>
     <p>説明:{{spot.introduction}}</p>
+    <h1>{{spot.id}}</h1>
     <nuxt-link
-    :to="$my.spotLinkTo(spot.id)"
+    :to="`${spot.id}/reviews/new`"
     class="text-decoration-none"
-    >ssssss</nuxt-link>
+    >
+    レビューを書く
+    </nuxt-link>
   </div>
 </template>
 
@@ -15,7 +18,7 @@ import axios from '~/plugins/axios'
 export default {
   data () {
     return {
-      spot: {}         
+      spot: {}
     }
   },
   computed: {
