@@ -24,12 +24,13 @@
           chips
           small-chips
           show-size
-          v-model="photo"
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
           @change="onImagePicked"
           
-        />
+        >
+        
+        </v-file-input>
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
       </v-col>
       <v-col
@@ -76,7 +77,7 @@ export default {
     return {
       name: "",
       introduction: "",
-      photo:null,
+      photo:"",
       uploadImageUrl: '',
       spots: []
     }
@@ -90,6 +91,9 @@ export default {
     })
   },
   methods: {
+    // onUpload: function() {
+    //   this.photo = event.target.files;
+    // },
     onImagePicked(file) {
       if (file !== undefined && file !== null) {
         if (file.name.lastIndexOf('.') <= 0) {

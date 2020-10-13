@@ -9,6 +9,8 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
+    # @reviews= Review.find(params[:id])
+    # render json: {spot: @spot, review: @reviews}
     render json: @spot
   end
 
@@ -43,7 +45,7 @@ class Api::V1::SpotsController < ApplicationController
       @spot = Spot.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
+    
     def spot_params
       params.require(:spot).permit(:name,:introduction,:location,:photo,:addess,:prefecture_id)
     end

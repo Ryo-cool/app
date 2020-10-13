@@ -33,3 +33,5 @@
 # デバッグbinding.pryコマンド履歴
 /.local
 /.local/*
+# アップロードファイル
+public/uploads/*

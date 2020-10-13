@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 2020_10_09_081154) do
     t.date "wentday"
     t.integer "rating"
     t.string "image"
-    t.integer "spot_id"
+    t.bigint "spot_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["spot_id"], name: "index_reviews_on_spot_id"
   end
 
   create_table "spots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -51,4 +52,5 @@ ActiveRecord::Schema.define(version: 2020_10_09_081154) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "reviews", "spots"
 end

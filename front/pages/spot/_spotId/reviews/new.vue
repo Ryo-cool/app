@@ -1,72 +1,118 @@
 <template>
-  <v-conrainer>
+  <v-container class="my-7">
     <v-row justify="center">
-      <v-col
-        cols="10"
-        sm="12"
-      >
-        <v-card>
-          <h2>レビューを書く</h2>
-          <v-row>
-            <v-col cols="4">
-              <v-text-field
-                label="タイトル"
-              >
-              </v-text-field>
-              <v-textarea
-                label="感想文"
-              >
-              </v-textarea>
-              <v-card-text>
-                総合評価（５点満点）
-                <v-rating
-                  v-model="rating"
-                  color="yellow darken-3"
-                  background-color="yellow darken-3"
-                  empty-icon="mdi-gift-outline"
-                  full-icon="mdi-gift"
-                  hover
-                  large
-                ></v-rating>
-              </v-card-text>
-            </v-col>
-          </v-row>
-        </v-card>
+      <v-col cols="11" md="7" sm="8">
+        <h1 class="text-center">口コミを投稿する</h1>
+        <h2>総合評価</h2>
+        <v-divider class="mb-2"></v-divider>
+        <v-rating
+          v-model="rating"
+          background-color="purple lighten-3"
+          color="purple"
+          large
+          hover
+        ></v-rating>
+        <h2>口コミ</h2>
+        <v-divider class="mb-4"></v-divider>
+        <h4>タイトル(◯文字以内)</h4>
+        <v-text-field
+          v-model="title"
+          placeholder="感想や思い出に残ったことをまとめましょう"
+          outlined
+        ></v-text-field>
+        <h4>内容(◯文字以内)</h4>
+        <v-textarea
+          v-model="text"
+          outlined
+          placeholder="日本でも有名な温泉街で、日帰りで友人と車で出かけました。着いた時から硫黄の香りと湯けむりで、ワクワクしました。なにより温泉街はとても心地よく、浴衣でまち歩きをしながら食べたり、お店にも立ち寄ったりすることができます。温泉にもゆっくり浸かることができ、大満足でした。"
+        ></v-textarea>
+        <h2>写真</h2>
+        <v-divider class="mb-4"></v-divider>
+        <!-- <img v-if="uploadImageUrl" :src="uploadImageUrl" /> -->
+        <v-file-input
+          v-model="input_image"
+          accept="image/*"
+          show-size
+          counter
+          label="File input"
+          @change="onImagePicked"
+        ></v-file-input>
+        <h2>行った時期</h2>
+        <v-divider class="mb-4"></v-divider>
+        <v-row justify="center">
+          <v-date-picker
+            v-model="picker"
+            type="month"
+            locale="jp"
+          ></v-date-picker>
+        </v-row>
+        <v-divider class="mb-2"></v-divider>
+        <v-row justify="center">
+          <v-btn color="success" dark min-width="300" @click="createReview">
+            投稿する
+          </v-btn>
+        </v-row>
       </v-col>
     </v-row>
-    <v-row justify="center">
-      <v-card>
-        <v-card-title>
-          行った時期
-        </v-card-title>
-        <v-date-picker
-          v-model="picker"
-          type="month"
-          color="green lighten-1"
-          locale="ja"
-        ></v-date-picker>
-      </v-card>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-btn color="primary">
-          投稿する
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-conrainer>
-
+  </v-container>
 </template>
 
 <script>
-import axios from '~/plugins/axios'
-
 export default {
-  data() {
+  data () {
     return {
-      picker: new Date().toISOString().substr(0, 7),
+      picker: new Date().toISOString().substr(0, 10),
+      uploadImageUrl: '',
+      input_image: "",
+      rating: "",
+      title: "",
+      text: "",
+      picker: "",
+      reviews:[]
+    }
+  },
+  layout ({ store }) {
+    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  },
+  methods: {
+    // onImagePicked(file) {
+    //   if (file !== undefined && file !== null) {
+    //     if (file.name.lastIndexOf('.') <= 0) {
+    //       return
+    //     }
+    //     const fr = new FileReader()
+    //     fr.readAsDataURL(file)
+    //     fr.addEventListener('load', () => {
+    //       this.uploadImageUrl = fr.result
+    //     })
+    //   } else {
+    //     this.uploadImageUrl = ''
+    //   }
+    // },
+    createReview () {
+      axios.post("/api/v1/reviews",
+      {
+        title: this.title,
+        text: this.text,
+        image: this.input_image,
+        wentday: this.picker,
+        rating: this.rating,
+        
+      })
+      .then(res => {
+        if (res.data) {
+            this.reviews.push(res.data)
+        }
+      })
+      .catch(error => console.log(error))
     }
   }
 }
-
 </script>
+
+<style>
+h2 {
+  margin: 15px 0 3px 0;
+}
+
+</style>
