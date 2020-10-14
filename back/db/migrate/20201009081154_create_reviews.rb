@@ -3,7 +3,7 @@ class CreateReviews < ActiveRecord::Migration[6.0]
     create_table :reviews do |t|
       t.string :title
       t.text :text
-      t.date :wentday
+      t.string :wentday
       t.integer :rating
       t.string :image
       t.references :spot, foreign_key: true

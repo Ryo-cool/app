@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2020_10_09_081154) do
   create_table "reviews", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
     t.text "text"
-    t.date "wentday"
+    t.string "wentday"
     t.integer "rating"
     t.string "image"
     t.bigint "spot_id"

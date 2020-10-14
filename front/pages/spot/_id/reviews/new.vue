@@ -58,21 +58,38 @@
 </template>
 
 <script>
+import axios from "~/plugins/axios"
+
 export default {
   data () {
     return {
-      picker: new Date().toISOString().substr(0, 10),
+      // picker: new Date().toISOString().substr(0, 10),
       uploadImageUrl: '',
       input_image: "",
       rating: "",
       title: "",
       text: "",
       picker: "",
-      reviews:[]
+      reviews:[],
+      spots: [],
+      id: [],
     }
   },
   layout ({ store }) {
     return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  },
+  created () {
+    axios
+      .get(`/api/v1/spots/${this.$route.params.id}`)
+      .then((res) => {
+        // const spot = res.data
+        this.spots = res.data
+        this.id = res.data.id
+        // this.review = res.data.review
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   },
   methods: {
     // onImagePicked(file) {
@@ -90,14 +107,14 @@ export default {
     //   }
     // },
     createReview () {
-      axios.post("/api/v1/reviews",
+      axios.post(`/api/v1/reviews/`,
       {
         title: this.title,
         text: this.text,
         image: this.input_image,
         wentday: this.picker,
         rating: this.rating,
-        
+        spot_id: this.id
       })
       .then(res => {
         if (res.data) {

@@ -26,7 +26,7 @@
           show-size
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
-          @change="onImagePicked"
+          @change="onUpload"
           
         >
         
@@ -78,7 +78,7 @@ export default {
       name: "",
       introduction: "",
       photo:"",
-      uploadImageUrl: '',
+      // uploadImageUrl: '',
       spots: []
     }
   },
@@ -91,23 +91,23 @@ export default {
     })
   },
   methods: {
-    // onUpload: function() {
-    //   this.photo = event.target.files;
-    // },
-    onImagePicked(file) {
-      if (file !== undefined && file !== null) {
-        if (file.name.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(file)
-        fr.addEventListener('load', () => {
-          this.uploadImageUrl = fr.result
-        })
-      } else {
-        this.uploadImageUrl = ''
-      }
+    onUpload: function() {
+      this.photo = event.target.files;
     },
+    // onImagePicked(file) {
+    //   if (file !== undefined && file !== null) {
+    //     if (file.name.lastIndexOf('.') <= 0) {
+    //       return
+    //     }
+    //     const fr = new FileReader()
+    //     fr.readAsDataURL(file)
+    //     fr.addEventListener('load', () => {
+    //       this.uploadImageUrl = fr.result
+    //     })
+    //   } else {
+    //     this.uploadImageUrl = ''
+    //   }
+    // },
      // ユーザーをaxiosで登録
     createSpot(){
       axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,photo: this.photo}).then(res => {
