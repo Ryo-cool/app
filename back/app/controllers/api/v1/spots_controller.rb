@@ -9,9 +9,8 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    # @reviews= Review.find(params[:id])
-    # render json: {spot: @spot, review: @reviews}
-    render json: @spot
+    @reviews = @spot.reviews.includes(:spot)
+    render json: {spot: @spot, review: @reviews}
   end
 
   # SPOT /spots

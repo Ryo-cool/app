@@ -11,7 +11,7 @@
       >
         <v-list-item-content>
           <v-list-item-title v-text="review.title"></v-list-item-title>
-          
+          <v-list-item-title v-text="review.wentday"></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list-item-group>
@@ -36,20 +36,20 @@ export default {
   },
   computed: {
   },
-  created () {
-    axios.get("/api/v1/reviews").then(res => {
-      if (res.data) {
-        this.reviews = res.data
-      }
-    })
-  },
+  // created () {
+  //   axios.get(`/api/v1/spots/${this.$route.params.id}/reviews`).then(res => {
+  //     if (res.data) {
+  //       this.reviews = res.data
+  //     }
+  //   })
+  // },
   mounted () {
     axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
-        const spot = res.data
+        const spot = res.data.spot
         this.spot = spot
-        // this.review = res.data.review
+        this.reviews = res.data.review
       })
       .catch((error) => {
         console.error(error)

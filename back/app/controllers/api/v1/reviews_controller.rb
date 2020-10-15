@@ -2,6 +2,7 @@ class Api::V1::ReviewsController < ApplicationController
   # before_action :set_spot,only:[:create]
 
   def index
+    # @reviews= Review.includes(:spots)
     @reviews= Review.all
     render json: @reviews
   end
@@ -18,7 +19,7 @@ class Api::V1::ReviewsController < ApplicationController
 
   private
   def review_params
-    params.require(:review).permit(:title,:text,:image,:wentday,:rating,:spot_id)
+    params.require(:review).permit(:title,:text,:image,:wentday,:rating).merge(spot_id: params[:spot_id])
   end
 
   def set_spot
