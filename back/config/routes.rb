@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :spots do
         resources :reviews
       end
-      resources :reviews
+      # resources :reviews
     end
   end
 end

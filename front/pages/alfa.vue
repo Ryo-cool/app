@@ -12,6 +12,7 @@
         v-model="name"
         prepend-icon=""
         type="text"
+        @change="onChange"
         />
         <v-text-field
         label="説明"
@@ -19,7 +20,7 @@
         prepend-icon=""
         type="text"
         />
-        <img v-if="uploadImageUrl" :src="uploadImageUrl" />
+        
         <v-file-input
           chips
           small-chips
@@ -31,6 +32,8 @@
         >
         
         </v-file-input>
+        <h2>経度[{{ lng }}]緯度[{{ lat }}]です</h2>
+        <h3>住所{{ formatted_address }}</h3>
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
       </v-col>
       <v-col
@@ -79,8 +82,15 @@ export default {
       introduction: "",
       photo:"",
       // uploadImageUrl: '',
+      lat: "",
+      lng: "",
+      formatted_address: "",
       spots: []
     }
+  },
+  mounted() {
+    // ジオコーディングを使用する
+    this.$gmapApiPromiseLazy().then(() => {this.geocoder = new google.maps.Geocoder() })
   },
   created() {
     // ユーザーをaxiosで取得
@@ -93,6 +103,19 @@ export default {
   methods: {
     onUpload: function() {
       this.photo = event.target.files;
+    },
+    // テキストフィールドが変更された時にジオコーディング発火
+    onChange() {
+      this.geocoder.geocode({
+        'address': this.name
+      },(results, status) =>{
+        if(status === google.maps.GeocoderStatus.OK) {
+          this.lat = results[0].geometry.location.lat();
+          this.lng = results[0].geometry.location.lng();
+          this.formatted_address = results[0].formatted_address;
+        }
+      }
+      )
     },
     // onImagePicked(file) {
     //   if (file !== undefined && file !== null) {
@@ -110,7 +133,14 @@ export default {
     // },
      // ユーザーをaxiosで登録
     createSpot(){
-      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,photo: this.photo}).then(res => {
+      axios.post("/api/v1/spots", 
+      {
+      name: this.name,
+      introduction: this.introduction,
+      photo: this.photo,
+      latitude: this.lat,
+      longitude: this.lng})
+      .then(res => {
         if (res.data) {
             this.spots.push(res.data)
         }

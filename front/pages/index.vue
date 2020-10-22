@@ -120,6 +120,7 @@
           >
           確かに
           </nuxt-link>
+          <maps />
         </v-col>
       </v-row>
     </v-container>

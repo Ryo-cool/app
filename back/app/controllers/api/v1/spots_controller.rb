@@ -46,6 +46,15 @@ class Api::V1::SpotsController < ApplicationController
 
     
     def spot_params
-      params.require(:spot).permit(:name,:introduction,:location,:photo,:addess,:prefecture_id)
+      params.require(:spot)
+      .permit(
+        :name,
+        :introduction,
+        :location,
+        :longitude,
+        :latitude,
+        :photo,
+        :addess,
+        :prefecture_id)
     end
 end

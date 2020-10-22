@@ -107,7 +107,7 @@ export default {
     //   }
     // },
     createReview () {
-      axios.post(`/api/v1/reviews/`,
+      axios.post(`/api/v1/spots/${this.$route.params.id}/reviews/`,
       {
         title: this.title,
         text: this.text,
@@ -119,6 +119,7 @@ export default {
       .then(res => {
         if (res.data) {
             this.reviews.push(res.data)
+            this.$router.push('/')
         }
       })
       .catch(error => console.log(error))
