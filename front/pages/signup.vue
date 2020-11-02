@@ -34,17 +34,26 @@ export default {
     return {
       isValid: false,
       loading: false,
-      params: { user: { name: '', email: '', password: '' } }
+      // params: { user: { name: '', email: '', password: '' } }
     }
   },
   methods: {
-    signup () {
+    signup(){
       this.loading = true
-      setTimeout(() => {
-        this.formReset()
-        this.loading = false
-      }, 1500)
+      this.$axios.post('/api/auth/register',this.params.user)
+                  .then((response) => {
+                      this.$auth.loginWith('local',{
+                          data: this.user
+                  })
+      })
     },
+    // signup () {
+    //   this.loading = true
+    //   setTimeout(() => {
+    //     this.formReset()
+    //     this.loading = false
+    //   }, 1500)
+    // },
     formReset () {
       this.$refs.form.reset()
       this.params = { user: { name: '', email: '', password: '' } }

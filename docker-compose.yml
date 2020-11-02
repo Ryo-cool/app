@@ -7,7 +7,7 @@ services:
       - ./back/environments/db.env
     restart: always
     volumes:
-      - db-data:/var/lib/mysql:cached
+      - db-data:/var/lib/mysql:delegated
     ports:
       - "4306:3306"
 
@@ -18,7 +18,7 @@ services:
     env_file:
       - ./back/environments/db.env
     volumes:
-      - ./back:/app:cached
+      - ./back:/app:delegated
     depends_on:
       - db
     # ホストコンピュータのポート：Docker内のポート
@@ -29,7 +29,7 @@ services:
     build: front/
     command: yarn run dev
     volumes:
-      - ./front:/app:cached
+      - ./front:/app:delegated
     ports:
       # ホストコンピュータのポート：Docker内のポート
       - 8080:3000
