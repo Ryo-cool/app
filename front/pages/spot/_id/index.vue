@@ -4,6 +4,7 @@
     <p>説明:{{spot.introduction}}</p>
     <h1>{{spot.id}}</h1>
     <h2>{{ spot.latitude }}</h2>
+    <h3>{{ prefecture }}</h3>
       <GmapMap 
       :center="{lat: spot.latitude, lng: spot.longitude}"
       :zoom="zoom" 
@@ -43,6 +44,7 @@ export default {
   data () {
     return {
       spot: {},
+      prefecture: {},
       reviews: {},
       // center: {lat: 35.71, lng: 139.72},
       zoom: 14,
@@ -69,6 +71,7 @@ export default {
       .then((res) => {
         this.spot = res.data.spot
         this.reviews = res.data.review
+        this.prefecture = res.data.prefecture.attributes.name
       })
       .catch((error) => {
         console.error(error)

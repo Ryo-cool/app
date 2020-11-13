@@ -167,7 +167,6 @@ export default {
   layout ({ store }) {
     return store.state.loggedIn ? 'loggedIn' : 'welcome'
   },
-
   data () {
     return {
       msgs: [],
@@ -202,7 +201,7 @@ export default {
     // ユーザーをaxiosで取得
     axios.get(url).then(res => {
       if (res.data) {
-          this.spots = res.data
+          this.spots = res.data.spot
           }
         })
   },

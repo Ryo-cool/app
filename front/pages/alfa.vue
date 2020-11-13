@@ -20,7 +20,14 @@
         prepend-icon=""
         type="text"
         />
-        
+        <v-select
+        label="都道府県"
+        v-model= "prefectures"
+        item-text="attributes.name"
+        item-value="attributes.id"
+        :items="prefecture"
+        outlined
+        />
         <v-file-input
           chips
           small-chips
@@ -59,7 +66,7 @@
                     class="text-decoration-none"
                     >
                     <v-list-item-title v-text="spot.name"></v-list-item-title>
-                    <v-list-item-title v-text="spot.photo"></v-list-item-title>
+                    <v-list-item-title v-text="spot.introduction"></v-list-item-title>
                     </nuxt-link>
                   </v-list-item-content>
                 </v-list-item>
@@ -81,11 +88,13 @@ export default {
       name: "",
       introduction: "",
       photo:"",
+      prefectures: "",
       // uploadImageUrl: '',
       lat: "",
       lng: "",
       formatted_address: "",
-      spots: []
+      spots: [],
+      prefecture: []
     }
   },
   mounted() {
@@ -97,6 +106,7 @@ export default {
     axios.get("/api/v1/spots").then(res => {
       if (res.data) {
         this.spots = res.data
+
       }
     })
   },
@@ -138,6 +148,7 @@ export default {
       name: this.name,
       introduction: this.introduction,
       photo: this.photo,
+      prefecture_id: this.prefectures,
       latitude: this.lat,
       longitude: this.lng})
       .then(res => {
