@@ -10,7 +10,6 @@
             :items="spots"
             item-text="name"
             prepend-icon="mdi-database-search"
-            dense
             
             filled
             hide-no-data
