@@ -19,7 +19,7 @@ class Api::V1::SpotsController < ApplicationController
     @spot = Spot.new(spot_params)
 
     if @spot.save
-      render json: @spot, status: :ok
+      render json: @spot, status: :created
     else
       render json: @spot.errors, status: :unprocessable_entity
     end
@@ -55,6 +55,8 @@ class Api::V1::SpotsController < ApplicationController
         :longitude,
         :latitude,
         # 画像ファイル
+        :image,
+        # :eyecatch
         :photo,
         :addess,
         :prefecture_id)

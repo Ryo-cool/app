@@ -2,24 +2,28 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-form enctype="multipart/form-data"/>
+        {{ post.name.length}}
+        <v-form enctype="multipart/form-data">
           <v-text-field
-          v-model="title"
+          v-model="post.name"
           placeholder="感想や思い出に残ったことをまとめましょう"
           outlined
           ></v-text-field>
-          <v-img v-if="uploadImageUrl" :src="uploadImageUrl" />
+          <v-img v-if="post.image" :src="post.image" />
           <v-file-input
-            v-model="image"
+            type="file"
             accept="image/*"
             show-size
             counter
+            multiple
+            ref="file"
             label="File input"
-            @change="onImagePicked"
+            @change="onFileChange"
           ></v-file-input>
           <v-btn color="success" dark min-width="300" @click="create">
             投稿する
           </v-btn>
+        </v-form>
       </v-col>
     </v-row>
   </v-container>
@@ -31,45 +35,40 @@ import axios from "~/plugins/axios"
 export default {
   data(){
     return{
-      title:"",
-      uploadImageUrl: '',
-      image:[]
+      post: {
+        name:"",
+        image:""
+      },
+      uploadedImage: '',
+      // image:[]
     }
   },
   methods:{
     create(){
-      let formData = new FormData
-      formData.append('name', this.title)
-      for( let i = 0; i < this.image.length; i++) {
-        let image = this.image[i];
-        formData.append('photo.url[]', image);
+      var formData = new FormData();
+      formData.append('name', this.post.name)
+      formData.append('image', this.post.image)
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
       }
       axios.post("/api/v1/spots/",
-      formData,
-        {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(response => {
-        console.log(response.data.status);
+        formData,config
+      ).then(response => {
+        this.post.name = ''
+        this.post.image = ''
+        console.log("success");
+        // this.$refs.file.value = ''
+        
       }).catch(error => {
         console.log(error);
       })
     },
-    onImagePicked(file) {
-      if (file !== undefined && file !== null) {
-        if (file.name.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(file)
-        fr.addEventListener('load', () => {
-          this.uploadImageUrl = fr.result
-        })
-      } else {
-        this.uploadImageUrl = ''
-      }
+    onFileChange() {
+      this.post.image = event.files;
     },
   }
 }
+
 </script>
