@@ -4,7 +4,8 @@ class Api::V1::SpotsController < ApplicationController
   # GET /spots
   def index
     @spots = Spot.all
-    render json: @spots
+    @prefecture = Prefecture.all
+    render json: {spots:@spots,prefecture:@prefecture}
   end
 
   # GET /spots/1
@@ -17,9 +18,8 @@ class Api::V1::SpotsController < ApplicationController
   # SPOT /spots
   def create
     @spot = Spot.new(spot_params)
-
     if @spot.save
-      render json: @spot, status: :created
+      render json: @spot, status: :created, location: @spot
     else
       render json: @spot.errors, status: :unprocessable_entity
     end
@@ -48,15 +48,16 @@ class Api::V1::SpotsController < ApplicationController
     
     def spot_params
       params
+      .require(:spot)
       .permit(
         :name,
         :introduction,
         :location,
         :longitude,
         :latitude,
-        # 画像ファイル
+        
         :image,
-        # :eyecatch
+        
         :photo,
         :addess,
         :prefecture_id)

@@ -2,28 +2,19 @@
   <v-container>
     <v-row>
       <v-col>
-        {{ post.name.length}}
-        <v-form enctype="multipart/form-data">
-          <v-text-field
-          v-model="post.name"
-          placeholder="感想や思い出に残ったことをまとめましょう"
-          outlined
-          ></v-text-field>
-          <v-img v-if="post.image" :src="post.image" />
-          <v-file-input
-            type="file"
-            accept="image/*"
-            show-size
-            counter
-            multiple
-            ref="file"
-            label="File input"
-            @change="onFileChange"
-          ></v-file-input>
-          <v-btn color="success" dark min-width="300" @click="create">
-            投稿する
-          </v-btn>
-        </v-form>
+        {{ name }}
+        <v-card class="pa-10 mx-auto mt-10" width="50%">
+          <v-form>
+            <input type="file" @change="setImage"/>
+            <v-text-field
+              v-model="name" 
+              outline 
+              placeholder="感想や思い出に残ったことをまとめましょう"/>
+            <v-card-actions>
+              <v-btn @click="submit">保存</v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -35,38 +26,39 @@ import axios from "~/plugins/axios"
 export default {
   data(){
     return{
-      post: {
-        name:"",
-        image:""
-      },
+      name:"",
+      image:null,
       uploadedImage: '',
       // image:[]
     }
   },
   methods:{
-    create(){
-      var formData = new FormData();
-      formData.append('name', this.post.name)
-      formData.append('image', this.post.image)
-      const config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      }
+    submit(e){
+      // var formData = new FormData();
+      // formData.append('name', this.name)
+      // formData.append('image', this.image)
+      // const config = {
+      //   headers: {
+      //     'content-type': 'multipart/form-data'
+      //   }
+      // }
       axios.post("/api/v1/spots/",
-        formData,config
+        {name: this.name}
+        // formData,config
       ).then(response => {
-        this.post.name = ''
-        this.post.image = ''
+        if (res.data){
+        this.name = ''
+        // this.image = ''
         console.log("success");
+        }
         // this.$refs.file.value = ''
         
       }).catch(error => {
         console.log(error);
       })
     },
-    onFileChange() {
-      this.post.image = event.files;
+    setImage(e) {
+      this.image = event.files;
     },
   }
 }

@@ -57,17 +57,14 @@
               <v-list-item-group color="primary">
                 <v-list-item
                   v-for="spot in spots"
-                  :key="spots.id"
+                  :key="spot.id"
                   @click=""
                 >
                   <v-list-item-content>
-                    <nuxt-link
-                    :to="$my.spotLinkTo(spot.id)"
-                    class="text-decoration-none"
-                    >
+
                     <v-list-item-title v-text="spot.name"></v-list-item-title>
                     <v-list-item-title v-text="spot.introduction"></v-list-item-title>
-                    </nuxt-link>
+                    
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -105,8 +102,8 @@ export default {
     // ユーザーをaxiosで取得
     axios.get("/api/v1/spots").then(res => {
       if (res.data) {
-        this.spots = res.data
-
+        this.spots = res.data.spots
+        this.prefecture = res.data.prefecture
       }
     })
   },
