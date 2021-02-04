@@ -125,7 +125,7 @@
       </v-row>
     </v-container>
     <v-container>
-      <row>
+      <v-row>
         <v-col>
           <v-card-title>
             全てのスポット
@@ -152,7 +152,7 @@
               </v-list-item>
             </v-list-item-group>
         </v-col>
-      </row>
+      </v-row>
     </v-container>
   </div>
 </template>

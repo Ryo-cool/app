@@ -6,6 +6,9 @@ export const state = () => ({
       appBarHeight: 56
     }
   },
+  age: "f",
+  samurai: "侍",
+
   current: {
     project: null
   },

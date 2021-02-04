@@ -39,6 +39,11 @@
         >
         
         </v-file-input>
+        <div class="pokemon">{{ $store.state.styles.beforeLogin.appBarHeight }}</div>
+        <div class="pokemon">おはよう</div>
+        <div class="nomal">おはよう</div>
+        <div>{{ $store.state.age }}</div>
+        <div>{{ $store.state.samurai}}</div>
         <h2>経度[{{ lng }}]緯度[{{ lat }}]です</h2>
         <h3>住所{{ formatted_address }}</h3>
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
@@ -160,4 +165,12 @@ export default {
 
 <style>
 
+.pokemon{
+ font-family: 'pokemon-font', monospace;
+ -webkit-font-smoothing: none;
+ font-size: 40px;
+}
+.nomal{
+  font-size: 40px;
+}
 </style>
