@@ -1,16 +1,16 @@
 <template>
   <v-container>
     <v-row align="center" justify="center">
-      <v-col cols="6">
+      <v-col cols="3">
         <v-text-field
-        label="ポケモン名"
+        label="ポケモン"
         v-model="name"
         prepend-icon=""
         type="text"
         />
         <v-btn color="primary" @click="createPost">ポケモンを検索する</v-btn>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="7">
           <v-card>
           <v-img
             :src="image"
@@ -18,19 +18,15 @@
             max-height="300"
             contain
           ></v-img>
-          <v-card-title>{{s.name}}</v-card-title>
-          <v-card-text>身長:{{ height }}m</v-card-text>
-          <v-card-text>重さ:{{ weight }}kg</v-card-text>
-          <v-card-sub-title>ステータス</v-card-sub-title>
-          <v-card-text>HP:{{ hp.base_stat }}</v-card-text>
-          <v-card-text>こうげき:{{ attack.base_stat }}</v-card-text>
-          <v-card-text>ぼうぎょ:{{ defense.base_stat }}</v-card-text>
-          <v-card-text>とくこう:{{ specialAttack.base_stat }}</v-card-text>
-          <v-card-text>とくぼう:{{ specialDefense.base_stat }}</v-card-text>
-          <v-card-text>すばやさ:{{ speed.base_stat }}</v-card-text>
           </v-card>
-
-        </v-col>
+        <v-card>
+          <v-card-title>{{s.name}}</v-card-title>
+          <v-card-title>身長:{{ heights }}m</v-card-title>
+          <v-card-title>重さ:{{ weight }}kg</v-card-title>
+          <v-card-title>ステータス</v-card-title>
+          <charts  :chartData="chartData" :options="options"/>
+        </v-card>
+      </v-col>
       </v-row>
     </v-container>
 </template>
@@ -45,32 +41,67 @@ export default {
       msgs: [],
       posts: [],
       s:[],
-      image:[],
-      height:[],
+      image:"",
+      heights:[],
       weight:[],
       hp:[],
       attack:[],
       defense:[],
       specialAttack:[],
       specialDefense:[],
-      speed: []
+      speed: [],
+      chartData: {
+          labels: ['HP','こうげき', 'ぼうぎょ', 'とくこう', 'とくぼう', 'すばやさ'],
+          datasets: [
+              {
+              label: ['ステータス'],
+              backgroundColor: "rgba(255,0,0,0.3)",
+              data: []
+              }
+          ]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scale:{
+            ticks: {
+              beginAtZero: true,
+              suggestedMin: 0,
+              suggestedMax: 170
+            }
+          }
+      }
     }
   },
   methods: {
-    // ユーザーをaxiosで登録
-    createPost(){
-      axios.get(`https://pokeapi.co/api/v2/pokemon/${this.name}`).then(res => {
+    async createPost(){
+      await axios.get(`https://pokeapi.co/api/v2/pokemon/${this.name}`).then(res => {
         if (res.data) {
             this.s = res.data
-            this.height = res.data.height / 10
+            this.heights = res.data.height / 10
             this.weight = res.data.weight /10
             this.image = res.data.sprites.front_default
-            this.hp = res.data.stats[0]
-            this.attack = res.data.stats[1]
-            this.defense = res.data.stats[2]
-            this.specialAttack = res.data.stats[3]
-            this.specialDefense = res.data.stats[4]
-            this.speed = res.data.stats[4]
+            this.hp = res.data.stats[0].base_stat
+            this.attack = res.data.stats[1].base_stat
+            this.defense = res.data.stats[2].base_stat
+            this.specialAttack = res.data.stats[3].base_stat
+            console.log(this.specialAttack)
+            this.specialDefense = res.data.stats[4].base_stat
+            this.speed = res.data.stats[4].base_stat
+            const newChartData = Object.assign({}, this.chartData)
+            newChartData.datasets[0].data.splice(0, newChartData.datasets[0].data.length)
+            newChartData.datasets[0].data.push(
+              ...[this.hp,
+              this.attack,
+              this.defense,
+              this.specialAttack,
+              this.specialDefense,
+              this.speed]
+              )
+            // newChartData.datasets[0].data[0]
+            // console.log(newChartData.datasets[0].data[0])
+            // newChartData.datasets[0].data[2] = this.defense
+            this.chartData = newChartData
         }
       })
     }

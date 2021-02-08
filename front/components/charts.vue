@@ -5,11 +5,11 @@ export default {
   mixins: [mixins.reactiveProp],
   props: {data: null,options: null},
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+    this.renderChart(this.chartData, this.options)
   },
   watch: {
       data: function() {
-        this.chartdata = this.data
+        this.chartData = this.data
       }
     }
     
