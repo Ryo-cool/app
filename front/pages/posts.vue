@@ -23,7 +23,6 @@
           <v-card-title>{{s.name}}</v-card-title>
           <v-card-title>身長:{{ heights }}m</v-card-title>
           <v-card-title>重さ:{{ weight }}kg</v-card-title>
-          <v-card-title>ステータス</v-card-title>
           <charts  :chartData="chartData" :options="options"/>
         </v-card>
       </v-col>
@@ -42,8 +41,8 @@ export default {
       posts: [],
       s:[],
       image:"",
-      heights:[],
-      weight:[],
+      heights:"",
+      weight:"",
       hp:[],
       attack:[],
       defense:[],
@@ -67,7 +66,7 @@ export default {
             ticks: {
               beginAtZero: true,
               suggestedMin: 0,
-              suggestedMax: 170
+              suggestedMax: 120
             }
           }
       }
@@ -85,7 +84,6 @@ export default {
             this.attack = res.data.stats[1].base_stat
             this.defense = res.data.stats[2].base_stat
             this.specialAttack = res.data.stats[3].base_stat
-            console.log(this.specialAttack)
             this.specialDefense = res.data.stats[4].base_stat
             this.speed = res.data.stats[4].base_stat
             const newChartData = Object.assign({}, this.chartData)
