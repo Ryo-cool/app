@@ -52,10 +52,10 @@ export default {
   //         }
   //       })
   // },
-  asyncData: async function() {
-    let result = await axios.get(url);
-    return { posts: result.data}
-  },
+  // asyncData: async function() {
+  //   let result = await axios.get(url);
+  //   return { posts: result.data}
+  // },
   methods: {
     createUser(){
       axios.post(url, {name: this.name,text: this.text})

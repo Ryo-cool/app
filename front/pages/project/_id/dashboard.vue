@@ -78,12 +78,7 @@ export default {
     }
   },
   created() {
-    // ユーザーをaxiosで取得
-    axios.get(url).then(res => {
-      if (res.data) {
-          this.posts = res.data
-          }
-        })
+
   },
   methods: {
     // ユーザーをaxiosで登録

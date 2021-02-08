@@ -1,66 +1,86 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        {{ name }}
-        <v-card class="pa-10 mx-auto mt-10" width="50%">
-          <v-form>
-            <input type="file" @change="setImage"/>
-            <v-text-field
-              v-model="name" 
-              outline 
-              placeholder="感想や思い出に残ったことをまとめましょう"/>
-            <v-card-actions>
-              <v-btn @click="submit">保存</v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+    <div>
+        <v-text-field
+        label="ポケモン"
+        v-model="name"
+        prepend-icon=""
+        type="text"
+        />
+        {{ counter }}
+        <button type='button' v-on:click='createPost'>{{btnName}}</button>
+        <line-chart
+            :data="chartData"
+            :options="options"
+            :height="100"
+        />
+    </div>
 </template>
 
 <script>
 import axios from "~/plugins/axios"
-
 export default {
-  data(){
-    return{
+  data: function() {
+    return {
       name:"",
-      image:null,
-      uploadedImage: '',
-      // image:[]
+      pokemon:"",
+      counter: 0,
+      btnName: '追加',
+      chartData: {
+        labels: [],
+        // データ詳細
+        datasets: [
+          {
+            label: "データ",
+            data: []
+          }
+        ]
+      },
+      options: {responsive: true
+                      , maintainAspectRatio: true
+                      },
+      addFlag: false
+    };
+  },
+  methods: {
+    // add: function() {
+    //   this.addFlag = !this.addFlag;
+    //   if (this.addFlag) {
+    //     this.createPost();
+    //     this.btnName = '停止'
+    //   } else {
+    //     this.btnName = '追加'
+    //   }
+    // },
+    addData: function() {
+      const newChartData = Object.assign({}, this.chartData)
+      this.counter++;
+      newChartData.labels.push(this.counter);
+      let value = Math.floor(Math.random() * Math.floor(100));
+      newChartData.datasets[0].data.push(value);
+      this.chartData = newChartData
+      setTimeout(() => {
+        if (this.addFlag) {
+          this.addData();
+        }
+      }, 1000);
+    },
+    async createPost(){
+      await axios.get(`https://pokeapi.co/api/v2/pokemon/${this.name}`).then(res => {
+        if (res.data) {
+          const newChartData = Object.assign({}, this.chartData)
+          this.counter = res.data.stats[1].base_stat
+          this.pokemon = res.data.stats[1].base_stat
+          newChartData.datasets[0].data.push(this.counter);
+          this.chartData = newChartData
+        }
+      })
     }
   },
-  methods:{
-    submit(e){
-      // var formData = new FormData();
-      // formData.append('name', this.name)
-      // formData.append('image', this.image)
-      // const config = {
-      //   headers: {
-      //     'content-type': 'multipart/form-data'
-      //   }
-      // }
-      axios.post("/api/v1/spots/",
-        {name: this.name}
-        // formData,config
-      ).then(response => {
-        if (res.data){
-        this.name = ''
-        // this.image = ''
-        console.log("success");
-        }
-        // this.$refs.file.value = ''
-        
-      }).catch(error => {
-        console.log(error);
-      })
-    },
-    setImage(e) {
-      this.image = event.files;
-    },
-  }
-}
-
+  // created: function() {
+  //   this.addData();
+  // }
+};
 </script>
+
+<style>
+</style>

@@ -61,13 +61,5 @@ export default {
         return this.spots.slice(0, 2);
     }
   },
-  created() {
-    // ユーザーをaxiosで取得
-    axios.get(url).then(res => {
-      if (res.data) {
-          this.spots = res.data
-          }
-        })
-  }
 }
 </script>
