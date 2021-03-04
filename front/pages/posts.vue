@@ -12,19 +12,19 @@
       </v-col>
       <v-col cols="7">
           <v-card>
-          <v-img
-            :src="image"
-            :aspect-ratio="1/1"
-            max-height="300"
-            contain
-          ></v-img>
+            <v-row>
+            <v-img
+              :src="image"
+              :aspect-ratio="1/1"
+              max-height="260"
+              contain
+            ></v-img>
+              <v-card-title>{{s.name}}</v-card-title>
+              <v-card-title>身長:{{ heights }}m</v-card-title>
+              <v-card-title>重さ:{{ weight }}kg</v-card-title>
+              </v-row>
+            <charts  :chartData="chartData" :options="options"/>
           </v-card>
-        <v-card>
-          <v-card-title>{{s.name}}</v-card-title>
-          <v-card-title>身長:{{ heights }}m</v-card-title>
-          <v-card-title>重さ:{{ weight }}kg</v-card-title>
-          <charts  :chartData="chartData" :options="options"/>
-        </v-card>
       </v-col>
       </v-row>
     </v-container>
@@ -66,7 +66,7 @@ export default {
             ticks: {
               beginAtZero: true,
               suggestedMin: 0,
-              suggestedMax: 120
+              suggestedMax: 150
             }
           }
       }
